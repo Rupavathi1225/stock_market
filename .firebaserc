@@ -1,5 +1,8 @@
 {
   "projects": {
-    "default": "developer-196d6"
-  }
+    "default": "developer-196d6",
+    "no": "developer-196d6"
+  },
+  "targets": {},
+  "etags": {}
 }

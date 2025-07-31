@@ -7,9 +7,6 @@ import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@
 import { Checkbox } from '@/components/ui/checkbox';
 import { X } from 'lucide-react';
 
-import { db } from '@/firebase'; // adjust path if needed
-import { collection, addDoc, Timestamp } from 'firebase/firestore';
-
 interface ConsultationModalProps {
   isOpen: boolean;
   onClose: () => void;
@@ -24,31 +21,11 @@ export const ConsultationModal: React.FC<ConsultationModalProps> = ({ isOpen, on
     whatsappOptIn: false
   });
 
-  const handleSubmit = async (e: React.FormEvent) => {
+  const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
-
-    try {
-      await addDoc(collection(db, 'consultationRequests'), {
-        name: formData.name,
-        email: formData.email,
-        phone: formData.phone,
-        service: formData.service,
-        whatsappOptIn: formData.whatsappOptIn,
-        submittedAt: Timestamp.now(),
-      });
-
-      console.log('Form submitted to Firebase!');
-      onClose(); // Close modal after success
-      setFormData({
-        name: '',
-        email: '',
-        phone: '',
-        service: '',
-        whatsappOptIn: false
-      });
-    } catch (error) {
-      console.error('Error submitting form to Firebase:', error);
-    }
+    console.log('Consultation form submitted:', formData);
+    // Here you can add the submission logic
+    onClose();
   };
 
   const services = [
@@ -63,15 +40,7 @@ export const ConsultationModal: React.FC<ConsultationModalProps> = ({ isOpen, on
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent className="bg-background border-accent/20 max-w-md mx-auto">
-        <DialogHeader className="relative">
-          <Button
-            variant="ghost"
-            size="icon"
-            className="absolute -top-2 -right-2 text-muted-foreground hover:text-foreground"
-            onClick={onClose}
-          >
-            <X className="h-4 w-4" />
-          </Button>
+        <DialogHeader>
           <DialogTitle className="text-2xl font-bold text-foreground mb-2">
             Get Your Free Consultation
           </DialogTitle>

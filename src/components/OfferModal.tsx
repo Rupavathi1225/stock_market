@@ -56,7 +56,7 @@ const OfferModal: React.FC<OfferModalProps> = ({ isOpen, onClose }) => {
               {/* Offer Image */}
               <div className="bg-white rounded-xl">
                 <img
-                  src="https://pepeleads.com/uploads/1752754302-7999532.jpeg"
+                  src="https://pepeleads.com/uploads/1753419453-3227695.jpeg"
                   alt="Special Offer"
                   className="w-full max-w-xs mx-auto rounded-xl shadow-md"
                 />

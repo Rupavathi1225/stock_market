@@ -33,12 +33,14 @@ import portfolio3 from "@/assets/portfolio-3.jpg";
 import portfolio4 from "@/assets/portfolio-4.jpg";
 import portfolio5 from "@/assets/portfolio-5.jpg";
 import portfolio6 from "@/assets/portfolio-6.jpg";
+import banner from "@/assets/banner.png";
 
 const Index = () => {
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [activeSection, setActiveSection] = useState("home");
   const [showConsultationModal, setShowConsultationModal] = useState(false);
   const [showOfferModal, setShowOfferModal] = useState(false);
+  const [offerShown, setOfferShown] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -62,19 +64,23 @@ const Index = () => {
   useEffect(() => {
     const timer = setTimeout(() => {
       setShowConsultationModal(true);
-    }, 20000);
+    }, 5000);
 
     return () => clearTimeout(timer);
   }, []);
 
-  // Show offer modal after 7 seconds
+   // Show offer modal on scroll (only once)
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setShowOfferModal(true);
-    }, 30000);
+     const handleScroll = () => {
+      if (window.scrollY > 200 && !showOfferModal && !offerShown) {
+        setShowOfferModal(true);
+        setOfferShown(true);
+      }
+    };
 
-    return () => clearTimeout(timer);
-  }, []);
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, [showOfferModal, offerShown]);
 
   const scrollToSection = (sectionId: string) => {
     const element = document.getElementById(sectionId);
@@ -92,7 +98,7 @@ const Index = () => {
     },
     {
       icon: Database,
-      title: "Firebase Integration",
+      title: "Storage Integration",
       description: "Seamless form handling, real-time databases, and cloud storage solutions."
     },
     {
@@ -133,8 +139,7 @@ const Index = () => {
   const pricingPlans = [
     {
       name: "Starter",
-      price: "₹999",
-      usdPrice: "$12",
+      usdPrice: "$20",
       description: "Perfect for small projects and getting started",
       features: [
         "Basic landing page",
@@ -147,8 +152,7 @@ const Index = () => {
     },
     {
       name: "Pro",
-      price: "₹1,999",
-      usdPrice: "$25",
+      usdPrice: "$40",
       description: "Advanced features for growing businesses",
       features: [
         "Advanced landing page",
@@ -162,8 +166,7 @@ const Index = () => {
     },
     {
       name: "Agency",
-      price: "₹3,499",
-      usdPrice: "$45",
+      usdPrice: "$80",
       description: "Complete solution for agencies and enterprises",
       features: [
         "Multi-page website",
@@ -180,13 +183,24 @@ const Index = () => {
 
   const automationSteps = [
     { step: 1, title: "Form Submission", description: "User submits form on your website" },
-    { step: 2, title: "Firebase Storage", description: "Data securely stored in real-time database" },
+    { step: 2, title: "Storage", description: "Data securely stored in real-time database" },
     { step: 3, title: "Email Sent", description: "Automated email notifications triggered" },
     { step: 4, title: "WhatsApp Trigger", description: "Instant WhatsApp messages delivered" }
   ];
 
   return (
     <div className="min-h-screen bg-background text-foreground">
+      {/* GamePro Banner */}
+      <div className="fixed bottom-4 left-4 z-[60]">
+        <a href="https://gamepro.com" target="_blank" rel="noopener noreferrer">
+          <img 
+            src="https://game-29919.web.app/banner2.png" 
+            alt="Game Pro Banner"
+            className="w-auto h-24 hover:opacity-80 transition-opacity duration-300 rounded-md shadow-lg"
+          />
+        </a>
+      </div>
+
       {/* Sticky Navigation */}
       <nav className="fixed top-0 left-0 right-0 z-50 bg-background/95 backdrop-blur-sm border-b border-border">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -504,7 +518,7 @@ const Index = () => {
                   <div className="text-center mb-6">
                     <h3 className="text-2xl font-bold text-foreground mb-2">{plan.name}</h3>
                     <div className="flex items-baseline justify-center gap-2 mb-2">
-                      <span className="text-3xl font-bold text-primary">{plan.price}</span>
+                      
                       <span className="text-lg text-muted-foreground">/ {plan.usdPrice}</span>
                     </div>
                     <p className="text-sm text-muted-foreground">{plan.description}</p>
